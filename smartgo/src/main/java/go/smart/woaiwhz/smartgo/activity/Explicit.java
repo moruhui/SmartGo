@@ -1,4 +1,4 @@
-package go.smart.woaiwhz.smartgo;
+package go.smart.woaiwhz.smartgo.activity;
 
 import android.app.Activity;
 import android.content.ComponentName;
@@ -24,6 +24,5 @@ public class Explicit extends ActivityTransmit<Explicit> {
         }
 
         intent.setComponent(mComponent);
-
     }
 }

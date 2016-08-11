@@ -1,4 +1,4 @@
-package go.smart.woaiwhz.smartgo;
+package go.smart.woaiwhz.smartgo.activity;
 
 import android.app.Activity;
 import android.net.Uri;
@@ -7,12 +7,12 @@ import android.support.annotation.NonNull;
 /**
  * Created by huazhou.whz on 2016/8/10.
  */
-public final class Implicit extends ActivityTransmit<Implicit> {
+public class Implicit extends ActivityTransmit<Implicit> {
     private Uri mData;
     private String mType;
     private String mAction;
 
-    Implicit(@NonNull Activity from,@NonNull String action) {
+    public Implicit(@NonNull Activity from,@NonNull String action) {
         super(from);
 
         mAction = action;

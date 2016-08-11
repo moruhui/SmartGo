@@ -1,6 +1,12 @@
 <resources>
     <string name="app_name">SmartGoProject</string>
     <string name="title_activity_main">MainActivity</string>
-    <string name="title_activity_second">SecondActivity</string>
-    <string name="title_activity_main2">Main2Activity</string>
+    <string name="title_activity_explicit">ExplicitActivity</string>
+    <string name="title_activity_implicit">ImplicitActivity</string>
+    <string name="tv_center_explicit_activity">Hei,I\'m an explicit activity!</string>
+    <string name="launch_explicit">Launch Explicit Activity</string>
+    <string name="launch_implicit">Launch Implicit Activity</string>
+    <string name="tv_center_implicit_activity">Hei,I\'m an implicit activity!</string>
+    <string name="activity_transition_name">launch_activity_with_fun</string>
+    <string name="launch_service">Launch Service</string>
 </resources>

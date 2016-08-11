@@ -13,12 +13,14 @@ import java.util.ArrayList;
  * Created by huazhou.whz on 2016/8/10.
  */
 public abstract class BaseTransmit<M extends BaseTransmit> {
+    protected static final String TAG = "SmartGo";
+
     protected final Activity mFrom;
     protected Intent mIntent;
     protected M me;
 
     @SuppressWarnings("unchecked")
-    BaseTransmit(@NonNull Activity from){
+    public BaseTransmit(@NonNull Activity from){
         mFrom = from;
         me = (M) this;
     }

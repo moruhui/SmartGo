@@ -1,14 +1,22 @@
-package go.smart.woaiwhz.smartgo;
+package go.smart.woaiwhz.smartgo.activity;
 
 import android.app.Activity;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.os.Build;
 import android.support.annotation.AnimRes;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.util.Pair;
+import android.util.Log;
 import android.view.View;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import go.smart.woaiwhz.smartgo.BaseTransmit;
+import go.smart.woaiwhz.smartgo.BuildConfig;
 
 /**
  * Created by huazhou.whz on 2016/8/10.
@@ -19,7 +27,7 @@ public abstract class ActivityTransmit<M extends ActivityTransmit> extends BaseT
     protected int mRequestCode = INIT_REQUEST_CODE;
     protected ActivityOptionsCompat mOption;
 
-    ActivityTransmit(@NonNull Activity from) {
+    public ActivityTransmit(@NonNull Activity from) {
         super(from);
     }
 
@@ -28,6 +36,8 @@ public abstract class ActivityTransmit<M extends ActivityTransmit> extends BaseT
 
         if(isAvailable()) {
             ActivityCompat.startActivityForResult(mFrom,mIntent,mRequestCode,mOption.toBundle());
+        }else if(BuildConfig.DEBUG){
+            Log.e(TAG, "have no resolved activity");
         }
     }
 
@@ -91,6 +101,83 @@ public abstract class ActivityTransmit<M extends ActivityTransmit> extends BaseT
         }
 
         return me;
+    }
+
+    // TODO: 2016/8/11
+    @SuppressWarnings("unchecked")
+    public SharedAnimatorBuilder<? super M> shareElements(){
+        return new SharedAnimatorBuilder(this);
+    }
+
+    public static final class SharedAnimatorBuilder<M extends ActivityTransmit>{
+        private final M external;
+        private final List<Pair> mCollection;
+
+        public SharedAnimatorBuilder(M external){
+            this.external = external;
+
+            mCollection = new ArrayList<>();
+        }
+
+
+        public SharedAnimatorBuilder<M> like(@NonNull View view){
+            if(Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) {
+                like(view,view.getTransitionName());
+            }
+
+            return this;
+        }
+
+        public SharedAnimatorBuilder<M> like(@NonNull View view, @NonNull String transition){
+            mCollection.add(Pair.create(view,transition));
+
+            return this;
+        }
+
+        public SharedAnimatorBuilder<M> andSystem(){
+            return andSystem(true);
+        }
+
+        public SharedAnimatorBuilder<M> andSystem(boolean includeStatusBar){
+            if(Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+                return this;
+            }
+
+            final View decor = external.mFrom.getWindow().getDecorView();
+
+            if (decor == null){
+                return this;
+            }
+
+            if(includeStatusBar) {
+                final View statusBar = decor.findViewById(android.R.id.statusBarBackground);
+                addToCollection(statusBar);
+            }
+
+            final View navBar = decor.findViewById(android.R.id.navigationBarBackground);
+            addToCollection(navBar);
+
+            return this;
+        }
+
+        private void addToCollection(View view){
+            if(view == null){
+                return;
+            }
+
+            like(view);
+        }
+
+        @SuppressWarnings("unchecked")
+        public M fine(){
+            if(!mCollection.isEmpty()) {
+                Pair[] pairs = new Pair[mCollection.size()];
+                mCollection.toArray(pairs);
+                external.animate(pairs);
+            }
+
+            return external;
+        }
     }
 
     private boolean isOptionNull(){

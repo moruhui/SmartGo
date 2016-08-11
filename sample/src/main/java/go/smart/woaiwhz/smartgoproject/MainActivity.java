@@ -1,13 +1,18 @@
 package go.smart.woaiwhz.smartgoproject;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.Toast;
 
 import go.smart.woaiwhz.smartgo.SmartGo;
 
 public class MainActivity extends AppCompatActivity {
+
+    private static final int REQUEST_CODE = 1 << 10;
+    public static final String REQUEST_STRING = "resolve";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,23 +23,60 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
     }
 
-    @SuppressWarnings("unused")
+    /**
+     * 显式调用
+     */
     public void launchExplicitActivity(View v){
-        //显式调用
         SmartGo.from(this)
-                .to(SecondActivity.class)
-                .animate(android.R.anim.fade_in, android.R.anim.fade_out)
-                .andRequestCode(2)
+                .to(ExplicitActivity.class)
+                .shareElements()
+                .like(findViewById(R.id.launch_explicit))
+                .andSystem()
+                .fine()
                 .go();
     }
 
-    @SuppressWarnings("unused")
+    /**
+     * 隐式调用
+     */
     public void launchImplicitActivity(View v){
-        //隐式调用
         SmartGo.from(this)
-                .to("test")
-                .withCategory("test")
+                .to("go.smart.woaiwhz.smartgoproject.implicit")
+                .withCategory("go.smart.woaiwhz.smartgoproject.have.fun")
+                .andRequestCode(REQUEST_CODE)
                 .animate(android.R.anim.fade_in, android.R.anim.fade_out)
                 .go();
+    }
+
+    public void launchService(View v){
+        SmartGo.from(this)
+                .run(BackgroundService.class)
+//                .bind()
+//                .whenConnected(new ServiceTransmit.ConnectedService() {
+//                    @Override
+//                    public void onServiceConnected(ComponentName name, IBinder service) {
+//
+//                    }
+//                })
+//                .whenDisconnected(new ServiceTransmit.DisconnectedService() {
+//                    @Override
+//                    public void onServiceDisconnected(ComponentName name) {
+//
+//                    }
+//                })
+//                .withFlag(2)
+//                .fine()
+                .go();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == REQUEST_CODE && data != null){
+            final String result = data.getStringExtra(REQUEST_STRING);
+
+            Toast.makeText(this,result,Toast.LENGTH_SHORT).show();
+        }
     }
 }

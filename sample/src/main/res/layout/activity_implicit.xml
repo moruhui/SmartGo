@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    tools:context=".ExplicitActivity">
+    tools:context="go.smart.woaiwhz.smartgoproject.ImplicitActivity">
 
     <android.support.v7.widget.Toolbar
         style="?attr/toolbarStyle"
@@ -15,14 +14,11 @@
         android:layout_height="?actionBarSize"
         android:background="?colorPrimary"
         app:titleTextColor="@android:color/white"
-        app:title="@string/title_activity_explicit"
-        android:transitionName="@string/activity_transition_name"
-        tools:targetApi="LOLLIPOP"
-        />
+        app:title="@string/title_activity_implicit"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:text="@string/tv_center_explicit_activity"/>
+        android:text="@string/tv_center_implicit_activity"/>
 </RelativeLayout>
