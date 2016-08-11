@@ -175,14 +175,14 @@ public abstract class BaseTransmit<M extends BaseTransmit> {
         return me;
     }
 
-    public M withParcelableArrayListExtra(@NonNull String name, @NonNull ArrayList<? extends Parcelable> value){
-        getIntent().putParcelableArrayListExtra(name,value);
+    public M withStringArrayListExtra(@NonNull String name, @NonNull ArrayList<String> value){
+        getIntent().putStringArrayListExtra(name,value);
 
         return me;
     }
 
-    public M withStringArrayListExtra(@NonNull String name, @NonNull ArrayList<String> value){
-        getIntent().putStringArrayListExtra(name,value);
+    public M withParcelableArrayListExtra(@NonNull String name, @NonNull ArrayList<? extends Parcelable> value){
+        getIntent().putParcelableArrayListExtra(name,value);
 
         return me;
     }

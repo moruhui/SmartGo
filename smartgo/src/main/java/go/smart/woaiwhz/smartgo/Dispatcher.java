@@ -17,4 +17,8 @@ public class Dispatcher {
     public Explicit to(@NonNull Class<? extends Activity> to){
         return new Explicit(mFrom,to);
     }
+
+    public Implicit to(@NonNull String action){
+        return new Implicit(mFrom,action);
+    }
 }

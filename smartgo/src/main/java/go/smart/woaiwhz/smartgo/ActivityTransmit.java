@@ -1,9 +1,11 @@
 package go.smart.woaiwhz.smartgo;
 
 import android.app.Activity;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.support.annotation.AnimRes;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.util.Pair;
 import android.view.View;
@@ -20,6 +22,22 @@ public abstract class ActivityTransmit<M extends ActivityTransmit> extends BaseT
     ActivityTransmit(@NonNull Activity from) {
         super(from);
     }
+
+    public void go(){
+        prepare2Go();
+
+        if(isAvailable()) {
+            ActivityCompat.startActivityForResult(mFrom,mIntent,mRequestCode,mOption.toBundle());
+        }
+    }
+
+    private boolean isAvailable(){
+        final PackageManager manager = mFrom.getPackageManager();
+
+        return mIntent.resolveActivity(manager) != null;
+    }
+
+    protected abstract void prepare2Go();
 
     public M andRequestCode(int requestCode){
         mRequestCode = requestCode;

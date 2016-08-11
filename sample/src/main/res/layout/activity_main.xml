@@ -21,5 +21,5 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:text="Launch Activity"
-        android:onClick="launchActivity"/>
+        android:onClick="launchExplicitActivity"/>
 </RelativeLayout>

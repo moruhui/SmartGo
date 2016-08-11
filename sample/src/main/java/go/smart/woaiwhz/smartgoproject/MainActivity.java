@@ -19,9 +19,21 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @SuppressWarnings("unused")
-    public void launchActivity(View v){
+    public void launchExplicitActivity(View v){
+        //显式调用
         SmartGo.from(this)
                 .to(SecondActivity.class)
+                .animate(android.R.anim.fade_in, android.R.anim.fade_out)
+                .andRequestCode(2)
+                .go();
+    }
+
+    @SuppressWarnings("unused")
+    public void launchImplicitActivity(View v){
+        //隐式调用
+        SmartGo.from(this)
+                .to("test")
+                .withCategory("test")
                 .animate(android.R.anim.fade_in, android.R.anim.fade_out)
                 .go();
     }
