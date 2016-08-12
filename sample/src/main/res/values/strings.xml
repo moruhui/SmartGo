@@ -9,4 +9,5 @@
     <string name="tv_center_implicit_activity">Hei,I\'m an implicit activity!</string>
     <string name="activity_transition_name">launch_activity_with_fun</string>
     <string name="launch_service">Launch Service</string>
+    <string name="launch_broadcast">Launch Broadcast</string>
 </resources>

@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 
 import go.smart.woaiwhz.smartgo.activity.Explicit;
 import go.smart.woaiwhz.smartgo.activity.Implicit;
+import go.smart.woaiwhz.smartgo.broadcast.BroadcastTransmit;
 import go.smart.woaiwhz.smartgo.service.ServiceTransmit;
 
 /**
@@ -29,5 +30,9 @@ public class Dispatcher {
 
     public ServiceTransmit run(@NonNull Class<? extends Service> to){
         return new ServiceTransmit(mFrom,to);
+    }
+
+    public BroadcastTransmit send(@NonNull String action){
+        return new BroadcastTransmit(mFrom,action);
     }
 }

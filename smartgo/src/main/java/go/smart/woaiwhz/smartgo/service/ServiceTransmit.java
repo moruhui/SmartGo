@@ -8,6 +8,8 @@ import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import java.lang.ref.WeakReference;
+
 import go.smart.woaiwhz.smartgo.BaseTransmit;
 import go.smart.woaiwhz.smartgo.BuildConfig;
 
@@ -76,25 +78,27 @@ public final class ServiceTransmit extends BaseTransmit<ServiceTransmit> {
     }
 
     public static class InnerServiceConnection implements ServiceConnection{
-        private final ConnectedService mConnected;
-        private final DisconnectedService mDisconnected;
+        private final WeakReference<ConnectedService> mConnected;
+        private final WeakReference<DisconnectedService> mDisconnected;
 
         public InnerServiceConnection(ConnectedService connected, DisconnectedService disconnected){
-            mConnected = connected;
-            mDisconnected = disconnected;
+            mConnected = new WeakReference<>(connected);
+            mDisconnected = new WeakReference<>(disconnected);
         }
 
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
-            if(mConnected != null){
-                mConnected.onServiceConnected(name,service);
+            final ConnectedService bind = mConnected.get();
+            if(bind != null){
+                bind.onServiceConnected(name,service);
             }
         }
 
         @Override
         public void onServiceDisconnected(ComponentName name) {
-            if (mDisconnected != null){
-                mDisconnected.onServiceDisconnected(name);
+            final DisconnectedService bind = mDisconnected.get();
+            if (bind != null){
+                bind.onServiceDisconnected(name);
             }
         }
     }

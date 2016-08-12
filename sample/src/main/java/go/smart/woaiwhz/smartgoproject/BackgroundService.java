@@ -11,7 +11,7 @@ public class BackgroundService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Toast.makeText(getApplicationContext(),"test",Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(),"I'm a service!",Toast.LENGTH_SHORT).show();
         return super.onStartCommand(intent, flags, startId);
     }
 

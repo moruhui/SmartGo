@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.View;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import go.smart.woaiwhz.smartgo.BaseTransmit;
@@ -105,7 +106,7 @@ public abstract class ActivityTransmit<M extends ActivityTransmit> extends BaseT
 
     // TODO: 2016/8/11
     @SuppressWarnings("unchecked")
-    public SharedAnimatorBuilder<? super M> shareElements(){
+    public SharedAnimatorBuilder<M> shareElements(){
         return new SharedAnimatorBuilder(this);
     }
 
@@ -134,19 +135,26 @@ public abstract class ActivityTransmit<M extends ActivityTransmit> extends BaseT
             return this;
         }
 
-        public SharedAnimatorBuilder<M> andSystem(){
-            return andSystem(true);
+
+        public SharedAnimatorBuilder<M> append(@NonNull Pair<View,String>... pairs){
+            mCollection.addAll(Arrays.asList(pairs));
+
+            return this;
         }
 
-        public SharedAnimatorBuilder<M> andSystem(boolean includeStatusBar){
+        public M withSystemUI(){
+            return withSystemUI(true);
+        }
+
+        public M withSystemUI(boolean includeStatusBar){
             if(Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-                return this;
+                return fine();
             }
 
             final View decor = external.mFrom.getWindow().getDecorView();
 
             if (decor == null){
-                return this;
+                return fine();
             }
 
             if(includeStatusBar) {
@@ -157,7 +165,7 @@ public abstract class ActivityTransmit<M extends ActivityTransmit> extends BaseT
             final View navBar = decor.findViewById(android.R.id.navigationBarBackground);
             addToCollection(navBar);
 
-            return this;
+            return fine();
         }
 
         private void addToCollection(View view){

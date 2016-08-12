@@ -47,5 +47,12 @@
             android:layout_height="wrap_content"
             android:text="@string/launch_service"
             android:onClick="launchService"/>
+
+        <Button
+            style="@style/LaunchButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/launch_broadcast"
+            android:onClick="launchBroadCast"/>
     </LinearLayout>
 </RelativeLayout>

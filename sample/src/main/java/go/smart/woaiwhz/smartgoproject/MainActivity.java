@@ -1,6 +1,9 @@
 package go.smart.woaiwhz.smartgoproject;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -31,8 +34,7 @@ public class MainActivity extends AppCompatActivity {
                 .to(ExplicitActivity.class)
                 .shareElements()
                 .like(findViewById(R.id.launch_explicit))
-                .andSystem()
-                .fine()
+                .withSystemUI()
                 .go();
     }
 
@@ -67,6 +69,24 @@ public class MainActivity extends AppCompatActivity {
 //                .withFlag(2)
 //                .fine()
                 .go();
+    }
+
+    public void launchBroadCast(View v){
+        registerReceiver();
+
+        SmartGo.from(this)
+                .send("go.smart.woaiwhz.smartgoproject.broadcast")
+                .withExtra(REQUEST_STRING,"I'm a broadcast!")
+                .go();
+    }
+
+    private void registerReceiver(){
+        registerReceiver(new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                Toast.makeText(getApplicationContext(),intent.getStringExtra(REQUEST_STRING),Toast.LENGTH_SHORT).show();
+            }
+        },new IntentFilter("go.smart.woaiwhz.smartgoproject.broadcast"));
     }
 
     @Override
