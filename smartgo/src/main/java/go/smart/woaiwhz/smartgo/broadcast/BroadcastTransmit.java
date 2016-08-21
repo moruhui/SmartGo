@@ -15,10 +15,10 @@ import go.smart.woaiwhz.smartgo.BuildConfig;
  * Created by huazhou.whz on 2016/8/12.
  */
 public class BroadcastTransmit extends BaseTransmit<BroadcastTransmit> {
-    private static final int NOMAL = 1;
+    private static final int NORMAL = 1;
     private static final int ORDER = 1 << 1;
 
-    @IntDef({NOMAL,ORDER})
+    @IntDef({NORMAL,ORDER})
     @Retention(RetentionPolicy.SOURCE)
     private @interface BroadcastType{}
 
@@ -26,7 +26,7 @@ public class BroadcastTransmit extends BaseTransmit<BroadcastTransmit> {
     private String mOrderPermission;
 
     @BroadcastType
-    private int mType = NOMAL;
+    private int mType = NORMAL;
 
     public BroadcastTransmit(@NonNull Activity from,@NonNull String action) {
         super(from);
@@ -56,7 +56,7 @@ public class BroadcastTransmit extends BaseTransmit<BroadcastTransmit> {
 
     private void sendBroadcast(){
         switch (mType){
-            case NOMAL:
+            case NORMAL:
                 mFrom.sendBroadcast(getIntent());
                 break;
 

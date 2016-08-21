@@ -43,10 +43,10 @@ public class Implicit extends ActivityTransmit<Implicit> {
     @Override
     public void prepare2Go() {
         getIntent().setAction(mAction);
-        checkDataAndType();
+        appendDataAndType();
     }
 
-    private void checkDataAndType(){
+    private void appendDataAndType(){
         if(mData == null || mType == null){
             if(mType != null){
                 getIntent().setType(mType);

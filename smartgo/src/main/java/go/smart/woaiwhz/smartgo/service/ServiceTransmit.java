@@ -8,8 +8,6 @@ import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
-import java.lang.ref.WeakReference;
-
 import go.smart.woaiwhz.smartgo.BaseTransmit;
 import go.smart.woaiwhz.smartgo.BuildConfig;
 
@@ -28,10 +26,8 @@ public final class ServiceTransmit extends BaseTransmit<ServiceTransmit> {
     }
 
     public ServiceTransmit bind(@NonNull ServiceConnection connection,int flag){
-        if(mConnection != null){
-            mConnection = connection;
-            mServiceFlag = flag;
-        }
+        mConnection = connection;
+        mServiceFlag = flag;
 
         return this;
     }
@@ -58,13 +54,13 @@ public final class ServiceTransmit extends BaseTransmit<ServiceTransmit> {
             return this;
         }
 
-        public BindingBuilder<M> whenConnected(ConnectedService connected){
+        public BindingBuilder<M> connected(ConnectedService connected){
             mConnected = connected;
 
             return this;
         }
 
-        public BindingBuilder<M> whenDisconnected(DisconnectedService disconnected){
+        public BindingBuilder<M> disconnected(DisconnectedService disconnected){
             mDisconnected = disconnected;
 
             return this;
@@ -78,17 +74,17 @@ public final class ServiceTransmit extends BaseTransmit<ServiceTransmit> {
     }
 
     public static class InnerServiceConnection implements ServiceConnection{
-        private final WeakReference<ConnectedService> mConnected;
-        private final WeakReference<DisconnectedService> mDisconnected;
+        private ConnectedService mConnected;
+        private DisconnectedService mDisconnected;
 
         public InnerServiceConnection(ConnectedService connected, DisconnectedService disconnected){
-            mConnected = new WeakReference<>(connected);
-            mDisconnected = new WeakReference<>(disconnected);
+            mConnected = connected;
+            mDisconnected = disconnected;
         }
 
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
-            final ConnectedService bind = mConnected.get();
+            final ConnectedService bind = mConnected;
             if(bind != null){
                 bind.onServiceConnected(name,service);
             }
@@ -96,10 +92,13 @@ public final class ServiceTransmit extends BaseTransmit<ServiceTransmit> {
 
         @Override
         public void onServiceDisconnected(ComponentName name) {
-            final DisconnectedService bind = mDisconnected.get();
+            final DisconnectedService bind = mDisconnected;
             if (bind != null){
                 bind.onServiceDisconnected(name);
             }
+
+            mConnected = null;
+            mDisconnected = null;
         }
     }
 
@@ -118,7 +117,7 @@ public final class ServiceTransmit extends BaseTransmit<ServiceTransmit> {
         try {
             startService();
         }catch (Exception e){
-            if(BuildConfig.DEBUG){
+            if(BuildConfig.DEBUG){// TODO: 2016/8/21 Library 的 BuildConfig.DEBUG 总是 false
                 Log.e(TAG, "unable to start service = " + getIntent().getComponent() +
                         ";error message = " + e.getMessage());
             }
@@ -135,9 +134,5 @@ public final class ServiceTransmit extends BaseTransmit<ServiceTransmit> {
 
     protected void prepare2Go(){
         getIntent().setComponent(mComponent);
-    }
-
-    private void test(){
-
     }
 }
