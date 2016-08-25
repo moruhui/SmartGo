@@ -30,12 +30,18 @@ public class MainActivity extends AppCompatActivity {
      * 显式调用
      */
     public void launchExplicitActivity(View v){
-        SmartGo.from(this)
-                .to(ExplicitActivity.class)
-                .shareElements()
-                .like(findViewById(R.id.launch_explicit))
-                .withSystemUI()
-                .go();
+//        SmartGo.from(this)
+//                .to(ExplicitActivity.class)
+//                .shareElements()
+//                .like(findViewById(R.id.launch_explicit))
+//                .withSystemUI()
+//                .go();
+//
+//        new Explicit2()
+//                .extras()
+//                .with("test",false)
+//                .then()
+//                .test();
     }
 
     /**
