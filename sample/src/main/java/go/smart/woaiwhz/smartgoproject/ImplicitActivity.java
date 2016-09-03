@@ -16,8 +16,8 @@ public class ImplicitActivity extends AppCompatActivity {
     }
 
     private void setResultSolved() {
-        Intent categoryIntent = new Intent();
-        categoryIntent.putExtra(MainActivity.REQUEST_STRING, "You Jump,I Jump");
-        setResult(RESULT_CODE, categoryIntent);
+        Intent intent = new Intent();
+        intent.putExtra(MainActivity.REQUEST_STRING, "You Jump,I Jump");
+        setResult(RESULT_CODE, intent);
     }
 }

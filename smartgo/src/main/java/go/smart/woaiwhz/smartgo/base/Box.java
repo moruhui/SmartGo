@@ -1,4 +1,4 @@
-package go.smart.woaiwhz.smartgo;
+package go.smart.woaiwhz.smartgo.base;
 
 /**
  * Created by huazhou.whz on 2016/8/24.
@@ -6,11 +6,11 @@ package go.smart.woaiwhz.smartgo;
 public class Box<T> {
     private T item;
 
-    public T getItem() {
+    public T get() {
         return item;
     }
 
-    public void setItem(T item) {
+    public void set(T item) {
         this.item = item;
     }
 }

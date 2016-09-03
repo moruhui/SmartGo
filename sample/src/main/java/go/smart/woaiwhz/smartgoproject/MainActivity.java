@@ -1,16 +1,20 @@
 package go.smart.woaiwhz.smartgoproject;
 
+import android.app.Service;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Toast;
 
 import go.smart.woaiwhz.smartgo.SmartGo;
+import go.smart.woaiwhz.smartgo.builder.ServiceBindingBuilder;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -21,7 +25,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Inject j = new Inject(findViewById(android.R.id.content));
+
+        final View root = getWindow().getDecorView();
+        Inject j = new Inject(root);
         Toolbar toolbar = j.$(R.id.tool_bar);
         setSupportActionBar(toolbar);
     }
@@ -30,18 +36,12 @@ public class MainActivity extends AppCompatActivity {
      * 显式调用
      */
     public void launchExplicitActivity(View v){
-//        SmartGo.from(this)
-//                .to(ExplicitActivity.class)
-//                .shareElements()
-//                .like(findViewById(R.id.launch_explicit))
-//                .withSystemUI()
-//                .go();
-//
-//        new Explicit2()
-//                .extras()
-//                .with("test",false)
-//                .then()
-//                .test();
+        SmartGo.from(this)
+                .to(ExplicitActivity.class)
+                .shareElements()
+                .like(v)
+                .withSystemUI()
+                .go();
     }
 
     /**
@@ -50,8 +50,8 @@ public class MainActivity extends AppCompatActivity {
     public void launchImplicitActivity(View v){
         SmartGo.from(this)
                 .to("go.smart.woaiwhz.smartgoproject.implicit")
-                .withCategory("go.smart.woaiwhz.smartgoproject.have.fun")
-                .andRequestCode(REQUEST_CODE)
+                .category("go.smart.woaiwhz.smartgoproject.have.fun")
+                .requestCode(REQUEST_CODE)
                 .animate(android.R.anim.fade_in, android.R.anim.fade_out)
                 .go();
     }
@@ -59,30 +59,32 @@ public class MainActivity extends AppCompatActivity {
     public void launchService(View v){
         SmartGo.from(this)
                 .run(BackgroundService.class)
-//                .bind()
-//                .whenConnected(new ServiceTransmit.ConnectedService() {
-//                    @Override
-//                    public void onServiceConnected(ComponentName name, IBinder service) {
-//
-//                    }
-//                })
-//                .whenDisconnected(new ServiceTransmit.DisconnectedService() {
-//                    @Override
-//                    public void onServiceDisconnected(ComponentName name) {
-//
-//                    }
-//                })
-//                .withFlag(2)
-//                .fine()
+                .bind()
+                .connected(new ServiceBindingBuilder.ConnectedService() {
+                    @Override
+                    public void onServiceConnected(ComponentName name, IBinder service) {
+                        Toast.makeText(MainActivity.this,"service connected",Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .disconnected(new ServiceBindingBuilder.DisconnectedService() {
+                    @Override
+                    public void onServiceDisconnected(ComponentName name) {
+                        Toast.makeText(MainActivity.this,"service disconnected",Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .then()
+                .flag(Service.BIND_AUTO_CREATE)
                 .go();
     }
 
-    public void launchBroadCast(View v){
+    public void launchBroadcast(View v){
         registerReceiver();
 
         SmartGo.from(this)
                 .send("go.smart.woaiwhz.smartgoproject.broadcast")
-                .withExtra(REQUEST_STRING,"I'm a broadcast!")
+                .extras()
+                .with(REQUEST_STRING,"I'm a broadcast!")
+                .then()
                 .go();
     }
 

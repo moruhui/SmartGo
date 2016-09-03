@@ -1,7 +1,7 @@
-package go.smart.woaiwhz.smartgo;
+package go.smart.woaiwhz.smartgo.builder;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
-import android.content.Context;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityOptionsCompat;
@@ -12,27 +12,28 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import go.smart.woaiwhz.smartgo.base.ActivityAnimate;
+import go.smart.woaiwhz.smartgo.base.Box;
+
 /**
  * Created by huazhou.whz on 2016/8/24.
  */
+@TargetApi(Build.VERSION_CODES.LOLLIPOP)
 public class SharedAnimatorBuilder<M> {
-//    private final Intent mIntent;
     private final Box<ActivityOptionsCompat> mBox;
     private final List<Pair> mCollection;
     private final M mOriginal;
-    private final Context mContext;
+    private final Activity mActivity;
 
-    public SharedAnimatorBuilder(@NonNull Box<ActivityOptionsCompat> box, @NonNull M original, @NonNull Context context){
+    public SharedAnimatorBuilder(@NonNull Box<ActivityOptionsCompat> box, @NonNull M original, @NonNull Activity activity){
         mBox = box;
         mCollection = new ArrayList<>();
-        mContext = context;
+        mActivity = activity;
         mOriginal = original;
     }
 
     public SharedAnimatorBuilder<M> like(@NonNull View view){
-        if(Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) {
-            like(view,view.getTransitionName());
-        }
+        like(view,view.getTransitionName());
 
         return this;
     }
@@ -42,7 +43,6 @@ public class SharedAnimatorBuilder<M> {
 
         return this;
     }
-
 
     public SharedAnimatorBuilder<M> append(@NonNull Pair<View,String>... pairs){
         mCollection.addAll(Arrays.asList(pairs));
@@ -55,16 +55,7 @@ public class SharedAnimatorBuilder<M> {
     }
 
     public M withSystemUI(boolean includeStatusBar){
-        if(Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-            return then();
-        }
-
-        if(!(mContext instanceof Activity)){
-            return then();
-        }
-
-        final Activity activity = (Activity) mContext;
-        final View decor = activity.getWindow().getDecorView();
+        final View decor = mActivity.getWindow().getDecorView();
 
         if (decor == null){
             return then();
@@ -92,10 +83,9 @@ public class SharedAnimatorBuilder<M> {
     @SuppressWarnings("unchecked")
     public M then(){
         if(!mCollection.isEmpty()) {
-            Pair[] pairs = new Pair[mCollection.size()];
+            final Pair[] pairs = new Pair[mCollection.size()];
             mCollection.toArray(pairs);
-            final ActivityAnimateBuilder<M> animateBuilder = new ActivityAnimateBuilder<>(mBox,mOriginal,mContext);
-            return (M) animateBuilder.animate(pairs);
+            ActivityAnimate.animate(mActivity,mBox,pairs);
         }
 
         return mOriginal;
