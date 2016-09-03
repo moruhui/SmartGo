@@ -11,7 +11,7 @@ public class SmartGoLog {
     private static final String TAG = SmartGo.TAG + ": LOG";
 
     public static void e(String msg){
-        if(SmartGo.canDebug()){
+        if(SmartGo.debug()){
             Log.e(TAG, msg);
         }
     }

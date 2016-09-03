@@ -8,7 +8,7 @@ import android.support.annotation.NonNull;
 import go.smart.woaiwhz.smartgo.activity.Explicit;
 import go.smart.woaiwhz.smartgo.activity.Implicit;
 import go.smart.woaiwhz.smartgo.broadcast.BroadcastLauncher;
-import go.smart.woaiwhz.smartgo.service.BindService;
+import go.smart.woaiwhz.smartgo.service.ServiceLauncher;
 
 /**
  * Created by huazhou.whz on 2016/8/10.
@@ -29,8 +29,8 @@ public class Dispatcher {
         return new Implicit(mFrom,action);
     }
 
-    public BindService run(@NonNull Class<? extends Service> to){
-        return new BindService(mFrom,to);
+    public ServiceLauncher run(@NonNull Class<? extends Service> to){
+        return new ServiceLauncher(mFrom,to);
     }
 
     public BroadcastLauncher send(@NonNull String action){

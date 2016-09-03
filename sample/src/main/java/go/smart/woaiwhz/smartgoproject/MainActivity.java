@@ -1,23 +1,18 @@
 package go.smart.woaiwhz.smartgoproject;
 
-import android.app.Service;
 import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.os.IBinder;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Toast;
 
 import go.smart.woaiwhz.smartgo.SmartGo;
-import go.smart.woaiwhz.smartgo.builder.ServiceBindingBuilder;
 
 public class MainActivity extends AppCompatActivity {
-
     private static final int REQUEST_CODE = 1 << 10;
     public static final String REQUEST_STRING = "resolve";
 
@@ -59,21 +54,6 @@ public class MainActivity extends AppCompatActivity {
     public void launchService(View v){
         SmartGo.from(this)
                 .run(BackgroundService.class)
-                .bind()
-                .connected(new ServiceBindingBuilder.ConnectedService() {
-                    @Override
-                    public void onServiceConnected(ComponentName name, IBinder service) {
-                        Toast.makeText(MainActivity.this,"service connected",Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .disconnected(new ServiceBindingBuilder.DisconnectedService() {
-                    @Override
-                    public void onServiceDisconnected(ComponentName name) {
-                        Toast.makeText(MainActivity.this,"service disconnected",Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .then()
-                .flag(Service.BIND_AUTO_CREATE)
                 .go();
     }
 

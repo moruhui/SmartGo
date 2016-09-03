@@ -15,14 +15,12 @@ import go.smart.woaiwhz.smartgo.builder.BundleBuilder;
 public class BroadcastLauncher extends BaseLauncher {
 
     private final String mAction;
-    protected final Context mFrom;
     private String mPermission;
     private boolean mIsOrder;
 
     public BroadcastLauncher(@NonNull Context from, @NonNull String action) {
-        super();
+        super(from);
 
-        mFrom = from;
         mAction = action;
         mIsOrder = false;
     }
@@ -43,32 +41,31 @@ public class BroadcastLauncher extends BaseLauncher {
         return extras(this);
     }
 
+    public BroadcastLauncher flag(final int flag){
+        return flag(this,flag);
+    }
+
     @Override
-    public void goReally(@NonNull Intent intent) {
+    public void goReally(final Context context,final Intent intent) {
         intent.setAction(mAction);
 
         try {
-            sendBroadcast(intent);
+            sendBroadcast(context,intent);
         }catch (Exception e){
             SmartGoLog.e("unable to sent broadcast = " + intent.getComponent() +
             ";error message = " + e.getMessage());
         }
     }
 
-    private void sendBroadcast(final Intent intent){
+    private void sendBroadcast(final Context context,final Intent intent){
         if(mIsOrder){
-            if(TextUtils.isEmpty(mPermission)){
-                throw new IllegalArgumentException("order broadcast needs receiverPermission");
-            }else {
-                mFrom.sendOrderedBroadcast(intent,mPermission);
-            }
+            context.sendOrderedBroadcast(intent,mPermission);
         }else {
             if(TextUtils.isEmpty(mPermission)){
-                mFrom.sendBroadcast(intent);
+                context.sendBroadcast(intent);
             }else {
-                mFrom.sendBroadcast(intent,mPermission);
+                context.sendBroadcast(intent,mPermission);
             }
         }
-
     }
 }

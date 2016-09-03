@@ -10,7 +10,6 @@ import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.AnimRes;
-import android.support.annotation.CallSuper;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
@@ -18,42 +17,32 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.util.Pair;
 import android.view.View;
 
+import go.smart.woaiwhz.smartgo.base.ActivityAnimate;
+import go.smart.woaiwhz.smartgo.base.BaseLauncher;
 import go.smart.woaiwhz.smartgo.base.Box;
 import go.smart.woaiwhz.smartgo.base.SmartGoLog;
 import go.smart.woaiwhz.smartgo.builder.SharedAnimatorBuilder;
-import go.smart.woaiwhz.smartgo.SmartGo;
-import go.smart.woaiwhz.smartgo.base.ActivityAnimate;
-import go.smart.woaiwhz.smartgo.base.BaseLauncher;
 
 /**
  * Created by huazhou.whz on 2016/9/3.
  */
 public abstract class BaseActivityLauncher extends BaseLauncher {
-    protected static final String TAG = SmartGo.TAG + " : Launch Activity";
     protected static final int INIT_REQUEST_CODE = -1;
 
     protected int mRequestCode = INIT_REQUEST_CODE;
     protected final Context mFrom;
 
-    private int mFlag;
     private final Box<ActivityOptionsCompat> mActivityOptionsBox;
 
     public BaseActivityLauncher(final Context from){
-        super();
+        super(from);
 
         mFrom = from;
         mActivityOptionsBox = new Box<>();
-        mFlag = 0;
     }
 
     protected <T extends BaseActivityLauncher> T requestCode(final T son, final int requestCode){
         mRequestCode = requestCode;
-
-        return son;
-    }
-
-    protected  <T extends BaseActivityLauncher> T flag(final T son, final int flag){
-        mFlag |= flag;
 
         return son;
     }
@@ -108,31 +97,27 @@ public abstract class BaseActivityLauncher extends BaseLauncher {
         }
     }
 
-    @CallSuper
-    public void preGo(@NonNull final Intent intent){
-        intent.setFlags(mFlag);
-    }
-
-    public void goReally(Intent intent){
-        if(isAvailable(intent)) {
+    @Override
+    public void goReally(final Context context,final Intent intent){
+        if(isAvailable(context,intent)) {
             final ActivityOptionsCompat options = mActivityOptionsBox.get();
             Bundle optionsBundle = null;
             if(options != null) {
                 optionsBundle = options.toBundle();
             }
 
-            if(mFrom instanceof Activity) {
-                ActivityCompat.startActivityForResult((Activity) mFrom, intent, mRequestCode, optionsBundle);
+            if(context instanceof Activity) {
+                ActivityCompat.startActivityForResult((Activity) context, intent, mRequestCode, optionsBundle);
             }else {
-                ContextCompat.startActivities(mFrom,new Intent[]{intent},optionsBundle);
+                ContextCompat.startActivities(context,new Intent[]{intent},optionsBundle);
             }
         }else{
             SmartGoLog.e("have no resolved activity : " + intent);
         }
     }
 
-    private boolean isAvailable(final Intent intent){
-        final PackageManager manager = mFrom.getPackageManager();
+    private boolean isAvailable(final Context context,final Intent intent){
+        final PackageManager manager = context.getPackageManager();
 
         final ResolveInfo info = manager.resolveActivity(
                 intent, PackageManager.MATCH_DEFAULT_ONLY);
