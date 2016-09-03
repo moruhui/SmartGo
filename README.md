@@ -9,4 +9,4 @@ Now you can launch an Activity like this:
         .withSystemUI()
         .go();
 ```
->Many new fetures will come soon
+>Many new features will come soon
