@@ -30,9 +30,10 @@ public class MainActivity extends AppCompatActivity {
     /**
      * 显式调用
      */
-    public void launchExplicitActivity(View v){
+    public void launchExplicitActivity(View v) throws Exception{
         SmartGo.from(this)
                 .to(ExplicitActivity.class)
+//                .to((Class<? extends Activity>) Class.forName("go.smart.woaiwhz.smartgoproject.ExplicitActivity"))
                 .shareElements()
                 .like(v)
                 .withSystemUI()

@@ -16,22 +16,26 @@ import go.smart.woaiwhz.smartgo.builder.BundleBuilder;
  * Created by huazhou.whz on 2016/8/11.
  */
 public class ServiceLauncher extends BaseLauncher {
-    private final Class<? extends Service> mToClass;
+    private final ComponentName mComponent;
     private int mFlag;
     private final Box<ServiceConnection> mServiceConnectionBox;
 
     public ServiceLauncher(@NonNull Context from, @NonNull Class<? extends Service> to) {
         super(from);
 
-        mToClass = to;
+        mComponent = new ComponentName(from,to);
         mServiceConnectionBox = new Box<>();
     }
 
     @Override
-    public void goReally(final Context context,final Intent intent) {
-        final ComponentName componentName = new ComponentName(context,mToClass);
-        intent.setComponent(componentName);
+    protected void preGo(@NonNull Intent intent) {
+        intent.setComponent(mComponent);
 
+        super.preGo(intent);
+    }
+
+    @Override
+    public void goReally(final Context context,final Intent intent) {
         try {
             startService(context,intent);
         }catch (Exception e){

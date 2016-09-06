@@ -1,4 +1,5 @@
 apply plugin: 'com.android.library'
+apply plugin: 'com.novoda.bintray-release'
 
 android {
     compileSdkVersion 23
@@ -16,6 +17,32 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+}
+def jCenter = new Properties()
+jCenter.load(project.rootProject.file('local.properties').newDataInputStream())
+
+def getProp(def jCenter,String key){
+
+    if (jCenter == null || key == null){
+        return ""
+    }
+
+    def value = jCenter.getProperty(key)
+
+    return value
+}
+
+publish {
+
+    userOrg = getProp(jCenter,"user")
+    groupId = getProp(jCenter,"groupId")
+    artifactId = getProp(jCenter,"artifactId")
+    publishVersion = getProp(jCenter,"publishVersion")
+    desc = getProp(jCenter,"desc")
+    website = getProp(jCenter,"website")
+
+    bintrayUser = getProp(jCenter,"user")
+    bintrayKey = getProp(jCenter,"bintrayKey")
 }
 
 dependencies {

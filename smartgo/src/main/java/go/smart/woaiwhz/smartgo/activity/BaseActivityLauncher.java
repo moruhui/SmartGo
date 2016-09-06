@@ -50,50 +50,47 @@ public abstract class BaseActivityLauncher extends BaseLauncher {
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     protected <T extends BaseActivityLauncher> SharedAnimatorBuilder<T> shareElements(final T son){
 
-        assertIsFromActivity();
-
-        return new SharedAnimatorBuilder<>(mActivityOptionsBox,son,(Activity) mFrom);
+        if(mFrom instanceof Activity){
+            return new SharedAnimatorBuilder<>(mActivityOptionsBox,son,(Activity) mFrom);
+        }else {
+            throw new IllegalArgumentException("this method needs Activity context,not : " + mFrom);
+        }
     }
 
     protected <T extends BaseActivityLauncher> T animate(final T son, @AnimRes int enterResId, @AnimRes int exitResId){
         ActivityAnimate.animate(mFrom,mActivityOptionsBox,enterResId,exitResId);
-
         return son;
     }
 
     protected <T extends BaseActivityLauncher> T animate(final T son, @NonNull View source, int startX, int startY,
                                                          int startWidth, int startHeight){
         ActivityAnimate.animate(mActivityOptionsBox,source,startX,startY,startWidth,startHeight);
-
         return son;
     }
 
     protected <T extends BaseActivityLauncher> T animate(final T son,
                                                          @NonNull View sharedElement, @NonNull String sharedElementName){
-        assertIsFromActivity();
-        ActivityAnimate.animate((Activity)mFrom,mActivityOptionsBox,sharedElement,sharedElementName);
-
-        return son;
+        if(mFrom instanceof Activity) {
+            ActivityAnimate.animate((Activity) mFrom, mActivityOptionsBox, sharedElement, sharedElementName);
+            return son;
+        }else {
+            throw new IllegalArgumentException("this method needs Activity context,not : " + mFrom);
+        }
     }
 
     protected <T extends BaseActivityLauncher> T animate(final T son, @NonNull View source,
                                                          @NonNull Bitmap thumbnail, int startX, int startY){
         ActivityAnimate.animate(mActivityOptionsBox,source,thumbnail,startX,startY);
-
         return son;
     }
 
     protected <T extends BaseActivityLauncher> T animate(final T son,
                                                          @NonNull Pair<View, String>... sharedElements){
-        assertIsFromActivity();
-        ActivityAnimate.animate((Activity)mFrom,mActivityOptionsBox,sharedElements);
-
-        return son;
-    }
-
-    protected void assertIsFromActivity(){
-        if(!(mFrom instanceof Activity)){
-            throw new IllegalArgumentException(mFrom + " isn't an Activity");
+        if(mFrom instanceof Activity) {
+            ActivityAnimate.animate((Activity) mFrom, mActivityOptionsBox, sharedElements);
+            return son;
+        }else {
+            throw new IllegalArgumentException("this method needs Activity context,not : " + mFrom);
         }
     }
 

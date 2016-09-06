@@ -16,7 +16,7 @@ public class ActivityAnimate{
 
     private ActivityAnimate(){}
 
-    public static void animate(final Context context,final @NonNull Box<ActivityOptionsCompat> box,
+    public static void animate(@NonNull final Context context,final @NonNull Box<ActivityOptionsCompat> box,
                                @AnimRes int enterResId, @AnimRes int exitResId){
         final ActivityOptionsCompat compat = ActivityOptionsCompat
                 .makeCustomAnimation(context,enterResId,exitResId);
@@ -31,7 +31,7 @@ public class ActivityAnimate{
         box.set(compat);
     }
 
-    public static void animate(final Activity activity,final @NonNull Box<ActivityOptionsCompat> box,
+    public static void animate(@NonNull final Activity activity,final @NonNull Box<ActivityOptionsCompat> box,
                         @NonNull View sharedElement,@NonNull String sharedElementName){
             final ActivityOptionsCompat compat = ActivityOptionsCompat.makeSceneTransitionAnimation(
                     activity, sharedElement, sharedElementName);
@@ -45,8 +45,7 @@ public class ActivityAnimate{
         box.set(compat);
     }
 
-    // TODO: 2016/9/3 看看这里的 lint 提示是什么意思
-    public static void animate(final Activity activity,final @NonNull Box<ActivityOptionsCompat> box,
+    public static void animate(@NonNull final Activity activity,final @NonNull Box<ActivityOptionsCompat> box,
                         @NonNull Pair<View, String>... sharedElements){
         final ActivityOptionsCompat compat = ActivityOptionsCompat.makeSceneTransitionAnimation(
                 activity, sharedElements);
