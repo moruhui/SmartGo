@@ -10,7 +10,7 @@ import go.smart.woaiwhz.smartgo.base.Dispatcher;
  */
 public class SmartGo {
     public static final String TAG = SmartGo.class.getSimpleName();
-    public static boolean DEBUG = true;
+    public static boolean DEBUG = false;
 
     private SmartGo(){/*do nothing*/}
 
