@@ -35,7 +35,7 @@ def getProp(def jCenter,String key){
 publish {
     groupId = "go.smart.woaiwhz.smartgo"
     artifactId = "SmartGo"
-    publishVersion = "0.9.0"
+    publishVersion = "0.9.1"
     website = "git@github.com:Sausure/SmartGo.git"
 
     userOrg = getProp(jCenter,"user")

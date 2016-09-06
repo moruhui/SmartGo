@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">SmartGoProject</string>
+    <string name="app_name">SmartGo</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="title_activity_explicit">ExplicitActivity</string>
     <string name="title_activity_implicit">ImplicitActivity</string>

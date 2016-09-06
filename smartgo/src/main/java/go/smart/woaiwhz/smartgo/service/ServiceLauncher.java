@@ -27,6 +27,10 @@ public class ServiceLauncher extends BaseLauncher {
         mServiceConnectionBox = new Box<>();
     }
 
+    public ServiceLauncher flag(final int flag){
+        return flag(this,flag);
+    }
+
     @Override
     protected void preGo(@NonNull Intent intent) {
         intent.setComponent(mComponent);

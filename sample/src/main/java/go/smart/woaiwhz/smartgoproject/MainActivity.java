@@ -1,10 +1,14 @@
 package go.smart.woaiwhz.smartgoproject;
 
+import android.app.Service;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -15,6 +19,7 @@ import go.smart.woaiwhz.smartgo.SmartGo;
 public class MainActivity extends AppCompatActivity {
     private static final int REQUEST_CODE = 1 << 10;
     public static final String REQUEST_STRING = "resolve";
+    private ServiceConnection mServiceConntect;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,9 +58,34 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void launchService(View v){
+        if(mServiceConntect == null){
+            mServiceConntect = new MyServiceConnect();
+        }
+
         SmartGo.from(this)
                 .run(BackgroundService.class)
+                .bind(mServiceConntect, Service.BIND_AUTO_CREATE)
                 .go();
+    }
+
+    private class MyServiceConnect implements ServiceConnection{
+
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            Toast.makeText(MainActivity.this,"connected",Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            Toast.makeText(MainActivity.this,"disconnected",Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        unbindService(mServiceConntect);
     }
 
     public void launchBroadcast(View v){
