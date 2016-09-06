@@ -20,7 +20,7 @@ SmartGo.from(this)
         .animate(android.R.anim.fade_in, android.R.anim.fade_out)
         .go();
 ```
-Also,you can launch a Service or a broadcast easier than before
+Also,you can launch a Service or a Broadcast easier than before
 ```java
 //launch service
 SmartGo.from(this)
