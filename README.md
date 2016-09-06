@@ -2,6 +2,15 @@
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](https://github.com/Sausure/SmartGo/blob/master/LICENSE.txt)
 [![Bintray](https://img.shields.io/bintray/v/sausure/maven/SmartGo.svg?maxAge=2592000)](https://github.com/Sausure/SmartGo)
 
+## Getting Start
+In your `build.gradle`:
+```groovy
+dependencies {
+    compile 'go.smart.woaiwhz.smartgo:SmartGo:0.9.1'
+}
+```
+
+## Features
 Now you can launch an explicit Activity like this:
 ```java
 SmartGo.from(this)
@@ -38,8 +47,7 @@ SmartGo.from(this)
 ```
 > I will add more features by this funny way in the future and I wish you can tell me how I can do better!
 
-License
--------
+##License
 
     Copyright 2016 Sausure.
 
